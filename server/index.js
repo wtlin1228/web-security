@@ -17,6 +17,8 @@ const session = require('express-session');
 const SQLiteStore = require('connect-sqlite3')(session);
 const { flashMiddleware } = require('./flash');
 
+const csp = require('helmet-csp')
+
 const app = express();
 
 // view engine setup
@@ -29,6 +31,16 @@ app.set('view options', { layout: true });
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(cors());
+
+app.use(csp({
+  // Specify directives as normal.
+  directives: {
+    defaultSrc: ["'self'"],
+    styleSrc: ["'self'", "'unsafe-inline'"],
+    scriptSrc: ["'self'"],
+    fontSrc: ["data:"],
+  }
+}));
 
 ///////////////////////////////////////////
 //// ↓ EXERCISE 2 SOLUTION GOES HERE ↓ ////
