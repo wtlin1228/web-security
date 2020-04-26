@@ -63,7 +63,9 @@ router.all('/perform', function(req, res) {
 
     Promise.all(
       [accountFrom, accountTo]
-        .map(accountId => Account.findById(accountId))
+        .map(accountId => {
+          return Account.findById(accountId)
+        })
     ).then(([aFrom, aTo]) => {
       if (!aFrom || !aTo) {
         errorAndReload(req, res, 'One or more account IDs are invalid');
